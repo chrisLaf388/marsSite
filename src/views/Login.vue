@@ -59,7 +59,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   name: "Login",
@@ -72,43 +72,43 @@ export default {
     };
   },
   methods: {
-    // loginRequest: async function () {
-    //   const credential = window.btoa(this.login + ":" + this.password);
+    loginRequest: async function () {
+      const credential = window.btoa(this.login + ":" + this.password);
 
-    //   await axios
-    //     .get("http://localhost:3002/gsb/login", {
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: "Basic " + credential,
-    //       },
-    //       withCredentials: true,
-    //     })
-    //     .then((response) => {
-    //       this.role = response.data.role;
-    //       localStorage.setItem("role", this.role);
-    //       this.$store.dispatch("setLogin", this.login);
-    //       switch (this.role) {
-    //         case "VIS":
-    //           this.$router.push("/rapportsVisiteur");
-    //           break;
-    //         case "RC":
-    //           this.$router.push("/rapportRedacteurListe");
-    //           break;
-    //         case "RH":
-    //           this.$router.push("/utilisateurs");
-    //           break;
-    //       }
-    //       return response;
-    //     })
-    //     .catch((e) => {
-    //       if (e.response.status === 401) {
-    //         this.error = "Bad login or password";
-    //         console.log("Unauthorized");
-    //       } else {
-    //         console.log(e);
-    //       }
-    //     });
-    // },
+      await axios
+        .get("http://localhost:90/mars/login", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + credential,
+          },
+          withCredentials: true,
+        })
+        .then((response) => {
+          this.role = response.data.role;
+          localStorage.setItem("role", this.role);
+          this.$store.dispatch("setLogin", this.login);
+          switch (this.role) {
+            case "ADMIN":
+              this.$router.push("/listeUtilisateursByAdmin");
+              break;
+            case "SUPERVISEUR":
+              this.$router.push("/listeUtilisateursBySuperviseur");
+              break;
+            case "AGENT":
+              this.$router.push("/acueilAgent");
+              break;
+          }
+          return response;
+        })
+        .catch((e) => {
+          if (e.response.status === 401) {
+            this.error = "Bad login or password";
+            console.log("Unauthorized");
+          } else {
+            console.log(e);
+          }
+        });
+    },
   },
 };
 </script>
