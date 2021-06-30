@@ -1,0 +1,22 @@
+A faire : 
+    Agent
+        - Mettre ses heures journalières 
+        - Affiche ses informations
+        - Modifie ses informations
+        Back : ajouter plus d'information (adresses, langues, campagne, qualif - spécialisation)
+    Superviseur : 
+        - afficher la liste des agents
+        - Gestion de ses campagnes en cours (Onglet campagne en cours)
+        - Mettre ses données a journalières
+        - Valide les heures de ses agents (check heure agent)
+        - Vac a enlever et rajouter competence et bouton supprimer et modifier
+        Back : liste d'agent dont gère un superviseur
+        + ajouter campagne
+
+    Mise en production : 
+        - Mettre sur tomcat sur Superviseur
+        - mettre le site front sur un Serveur 
+
+    Campagne :
+        Back : une campagne a une liste d'agents
+ 

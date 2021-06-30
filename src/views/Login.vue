@@ -95,7 +95,7 @@ export default {
               this.$router.push("/listeUtilisateursBySuperviseur");
               break;
             case "AGENT":
-              this.$router.push("/acueilAgent");
+              this.$router.push("/accueilAgent");
               break;
           }
           return response;
