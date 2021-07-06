@@ -133,14 +133,10 @@ export default {
           codePostale: this.codePostal,
           ville: this.ville,
         },
-      }).then((response) => {
-        let data = response.data;
-        localStorage.setItem("utilisateurId", data.login);
-        this.$router.push("/accueilAgent");
-      });
-        
-      
+      })
+      this.$router.push("/accueilAgent");
     },
+    // Probleme car renvois tjs sur accueil agent et non chez superviseur
     annuler: function () {
       this.$router.push("/accueilAgent");
     },

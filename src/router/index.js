@@ -3,7 +3,8 @@ import creerUtilisateur from "@/views/CreerUtilisateur.vue";
 import listeUtilisateursByAdmin from "@/views/UtilisateursListeByAdmin.vue";
 import listeUtilisateursBySuperviseur from "@/views/listeUtilisateurBySuperviseur.vue";
 import accueilAgent from "@/views/accueilAgent.vue";
-import modiferAgent from "@/views/modiferAgent.vue"
+import modiferAgentByAgent from "@/views/modiferAgentByAgent.vue";
+import modifierAgentBySuper from "@/views/modifierAgentBySuper";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -34,9 +35,14 @@ const routes = [
     component: accueilAgent,
   },
   {
-    path: "/modiferAgent",
-    name: "modiferAgent",
-    component: modiferAgent,
+    path: "/modiferAgentByAgent",
+    name: "modiferAgentByAgent",
+    component: modiferAgentByAgent,
+  },
+  {
+    path: "/modifierAgentBySuper",
+    name: "modifierAgentBySuper",
+    component: modifierAgentBySuper,
   },
   
   

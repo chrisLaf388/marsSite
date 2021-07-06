@@ -4,8 +4,8 @@
       <div class="row">
         <div class="col-3"></div>
         <div class="col-6 login-form-1 center px-5 py-4">
-          <h3 class="text-center text-white mb-5">Créer un utilisateur</h3>
-          <form @submit.prevent="creerAgent()">
+          <h3 class="text-center text-white mb-5">Modifier votre Profil Agent</h3>
+          <form @submit.prevent="modifierAgent()">
             <div class="form-group row">
               <p class="col-6 d-flex flex-column">
                 <label class="text-white">Login:</label>
@@ -15,16 +15,6 @@
                   id="login"
                   placeholder="Login"
                   v-model="login"
-                />
-              </p>
-              <p class="col-6 d-flex flex-column">
-                <label class="text-white">Mot de passe:</label>
-                <input
-                  type="password"
-                  name="mdp"
-                  id="mdp"
-                  placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-                  v-model="password"
                 />
               </p>
             </div>
@@ -85,25 +75,14 @@
                 />
               </p>
             </div>
-            <div class="form-group row">
-              <p class="col-6 d-flex flex-column">
-                <label class="text-white">Date de naissance:</label>
-                <input
-                  type="date"
-                  name="date"
-                  id="dateNaissance"
-                  placeholder="Date de naissance"
-                  v-model="dateNaissance"
-                />
-              </p>
-            </div>
+            
             <div class="form-group d-flex mt-4">
               <button
                 type="submit"
                 id="creer"
                 class="btnSubmit d-block m-auto rounded-pill bg-transparent text-primary px-3 py-2 border-primary fs-5"
               >
-                Créer
+                Modifier
               </button>
               <button
                 type="submit"
@@ -126,7 +105,7 @@
 import axios from "axios";
 
 export default {
-  name: "CreerUtilisateur",
+  name: "modifierAgent",
   data() {
     return {
       login: "",
@@ -136,13 +115,12 @@ export default {
       adresse: "",
       codePostal: "",
       ville: "",
-      dateNaissance: "",
     };
   },
   methods: {
-    creerAgent: async function () {
-      await axios("http://localhost:90/mars/agent/", {
-        method: "POST",
+    modifierAgent: async function () {
+      await axios("http://localhost:90/mars/agent/"+ this.$store.getters.getLoginFromStore, {
+        method: "PUT",
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -156,11 +134,11 @@ export default {
           ville: this.ville,
         },
       })
-      this.$router.push("/listeUtilisateursBySuperviseur");    
-      
+      this.$router.push("/accueilAgent");
     },
+    // Probleme car renvois tjs sur accueil agent et non chez superviseur
     annuler: function () {
-      this.$router.push("/listeUtilisateursBySuperviseur");
+      this.$router.push("/accueilAgent");
     },
   },
 };

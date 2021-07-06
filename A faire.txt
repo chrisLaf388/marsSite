@@ -20,3 +20,22 @@ A faire :
     Campagne :
         Back : une campagne a une liste d'agents
  
+
+a faire :
+    - agent : 
+        -> Back ! collection : matin heure debut fin et aprem heure debut fin avec une campagne
+        -> affiche planning avec heures de travail plus campagne de la semaine
+        Comment l'afficher?
+
+    - superviseur :
+        -> campagne debut fin + quels agents
+        -> agents ont une liste de competences liste déroulante
+        -> idem pour langues
+        -> Valide les heures des agents chaque jour
+    
+    - Admin : 
+        -> switch entre campagne, agents et superviseur
+        
+
+ps : https://spring.io/guides/gs/authenticating-ldap/ 
+   "active directory authentication spring"

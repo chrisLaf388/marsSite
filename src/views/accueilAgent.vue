@@ -6,12 +6,24 @@
         <div class="col-4 login-form-1 center px-5 py-4">
           <h3 class="text-center text-white mb-5">Welcome, </h3>
           <div class=".flex-column">
-            <label for="heureDebut" class="text-white">Heure de Debut :</label>
-            <input type="time" id="heureDebut" name="heureDebut"
-                  min="07:00" max="20:00" required>
-            <label for="heureFin" class="text-white">Heure de Fin :</label>
-            <input type="time" id="heureFin" name="heureFin"
-                  min="07:00" max="20:00" required>
+            <div class="p-3">
+              <h4 class="text-primary">Insérer vos heures du matin :</h4>
+              <label for="heureDebutMatin" class="text-white">Heure de Debut </label>
+              <input  type="time" id="heureDebutMatin" name="heureDebutMatin"
+                    min="07:00" max="20:00" required>
+              <label for="heureFinMatin" class="text-white">Heure de Fin </label>
+              <input class = "m-2" type="time" id="heureFinMatin" name="heureFinMatin"
+                    min="07:00" max="20:00" required>
+            </div>
+            <div class="p-3">
+              <h4 class="text-primary">Insérer vos heures de l'après midi :</h4>
+              <label for="heureDebutAprem" class="text-white">Heure de Debut </label>
+              <input type="time" id="heureDebutAprem" name="heureDebutAprem"
+                    min="07:00" max="20:00" required>
+              <label for="heureFinAprem" class="text-white">Heure de Fin </label>
+              <input class = "m-2" type="time" id="heureFinAprem" name="heureFinAprem"
+                    min="07:00" max="20:00" required>
+            </div>
           </div>
           <button                 
             class="btn btnSubmit d-block m-auto rounded-pill bg-transparent text-primary px-3 py-2 border-primary fs-5">
@@ -43,7 +55,7 @@ export default {
   },
   methods: { 
     goToModifierAgent:function(){
-      this.$router.push("/modiferAgent");
+      this.$router.push("/modiferAgentByagent");
     }
   }
 }

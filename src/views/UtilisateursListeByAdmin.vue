@@ -88,7 +88,7 @@
                         <div
                           class="infos d-flex justify-content-between"
                           @click="
-                            ficheUtilisateur(utilisateur.login, getRoute())
+                            ficheUtilisateur(utilisateur.login)
                           "
                         >
                           <span
@@ -101,14 +101,14 @@
                       <div class="boutons d_flex justify-content-end py-1 px-0">
                         <button
                           class="mr-2 text-primary bg-white border-0"
-                          @click="modifier(utilisateur.login, getRoute())"
+                          @click="modifier(utilisateur.login)"
                         >
                           <i class="fas fa-pen"></i>
                         </button>
                         <button
                           class="text-danger bg-white border-0"
                           @click="
-                            supprimerUtilisateur(utilisateur.login, getRoute())
+                            supprimerUtilisateur(utilisateur.login)
                           "
                         >
                           <i class="fas fa-trash-alt"></i>

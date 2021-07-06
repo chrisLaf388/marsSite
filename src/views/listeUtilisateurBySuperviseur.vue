@@ -3,17 +3,45 @@
     <div class="container login-container">
       <div class="row">
         <div class="col-12 login-form-1 center px-0 py-0">
-          <p class="text-white">Agents</p>  
+          <ul class="nav nav-tabs">
+            <li 
+              class="nav-item" 
+              :class="{ active: agentActive, inactive: !agentActive }"
+            >
+              <div
+                class="nav-link d-flex justify-content-between"
+                @click="listeAgents('agent')"
+              >  
+                <p>Agents</p>
+              </div>
+            </li>
+            <li class="nav-item"
+              :class="{ active: campagneActive, inactive: !campagneActive }"
+            >
+              <div
+                class="nav-link d-flex justify-content-between"
+                @click="listeCampagnes('campagnes')"
+              >
+                <p>Campagnes</p>
+              </div>             
+            </li>
+          </ul>
+            
           <div id="content">
             <div
               id="labels"
               class="d-flex justify-content-between px-1 mb-1 mt-4"
             >
-              <p class="text-white mb-0">Vac.</p>
-              <p class="text-white mb-0">Nom</p>
-              <p class="text-white mb-0">Prenom</p>
-              <p class="text-white mb-0">Op en cours</p>
-              <p class="text-white mb-0">Langues</p>
+              <p v-if="agentActive" class="text-white mb-0">Vac.</p>
+              <p v-if="agentActive" class="text-white mb-0">Nom</p>
+              <p v-if="agentActive" class="text-white mb-0">Prenom</p>
+              <p v-if="agentActive" class="text-white mb-0">Op en cours</p>
+              <p v-if="agentActive" class="text-white mb-0">Langues</p>
+
+              <p v-if="campagneActive" class="text-white mb-0">Nom</p>
+              <p v-if="campagneActive" class="text-white mb-0">Date - début</p>
+              <p v-if="campagneActive" class="text-white mb-0">Date - fin</p>
+              <p v-if="campagneActive" class="text-white mb-0">Responsable</p>
             </div>
             <div>
               <ul id="visiteurs" class="p-0 m-0">
@@ -29,27 +57,29 @@
                         <div
                           class="infos d-flex justify-content-between"
                           @click="
-                            ficheUtilisateur(utilisateur.login, getRoute())
+                            ficheUtilisateur(utilisateur.login)
                           "
                         >
                           <span
-                            >{{ utilisateur.nom }}
+                            >
+                        
+                            {{ utilisateur.nom }}
                             {{ utilisateur.prenom }}</span
                           >
-                          <span>{{ utilisateur.dateEmbauche }}</span>
+                          <span>{{ utilisateur.adresse }}</span>
                         </div>
                       </div>
                       <div class="boutons d_flex justify-content-end py-1 px-0">
                         <button
                           class="mr-2 text-primary bg-white border-0"
-                          @click="modifier(utilisateur.login, getRoute())"
+                          @click="modifier(utilisateur.email)"
                         >
                           <i class="fas fa-pen"></i>
                         </button>
                         <button
                           class="text-danger bg-white border-0"
                           @click="
-                            supprimerUtilisateur(utilisateur.login, getRoute())
+                            supprimerUtilisateur(utilisateur.email)
                           "
                         >
                           <i class="fas fa-trash-alt"></i>
@@ -63,7 +93,9 @@
           </div>
           
         </div>
-        <button class="btnSubmit d-block m-auto rounded-pill bg-transparent text-white px-3 py-2 border-white fs-5">
+        <button 
+          @click="gotoCreerAgent"
+          class="btnSubmit d-block m-auto rounded-pill bg-transparent text-white px-3 py-2 border-white fs-5">
               Créer un agent
           </button>
       </div>
@@ -79,51 +111,16 @@ export default {
   data() {
     return {
       utilisateurs: null,
-      visiteurActive: true,
-      rcActive: false,
-      rhActive: false,
+      agentActive: false,
+      campagneActive: true,
+      
     };
   },
   methods: {
-    getRoute: function () {
-      let route = "";
-      if (this.rcActive) {
-        route = "redacteurchercheur";
-      } else if (this.rhActive) {
-        route = "rh";
-      } else if (this.visiteurActive) {
-        route = "visiteur";
-      }
-      return route;
-    },
-    getActive: function (route) {
-      switch (route) {
-        case "visiteur":
-          this.visiteurActive = true;
-          this.rcActive = false;
-          this.rhActive = false;
-          break;
-
-        case "redacteurchercheur":
-          this.visiteurActive = false;
-          this.rcActive = true;
-          this.rhActive = false;
-          break;
-
-        case "rh":
-          this.visiteurActive = false;
-          this.rcActive = false;
-          this.rhActive = true;
-          break;
-      }
-      localStorage.setItem("vis", this.visiteurActive);
-      localStorage.setItem("rh", this.rhActive);
-      localStorage.setItem("rc", this.rcActive);
-    },
-    listeUtilisateurs: async function (route) {
-      this.getActive(route);
+    
+    listeUtilisateurs: async function () {
       await axios
-        .get("http://localhost:3002/gsb/" + route, {
+        .get("http://localhost:90/mars/agent", {
           headers: {
             "Content-Type": "application/json",
           },
@@ -136,24 +133,19 @@ export default {
           this.utilisateurs = response.data;
         });
     },
-    ficheUtilisateur: function (id, route) {
+    // a revoir
+    ficheUtilisateur: function (id) {
       localStorage.setItem("utilisateurId", id);
-      localStorage.setItem("route", route);
       this.$router.push("/ficheUtilisateur");
     },
-    createUtilisateur: function (route) {
-      this.getActive();
-      localStorage.setItem("route", route);
-      this.$router.push("/creerUtilisateur");
+    modifier: function (id) {
+      this.$store.dispatch("setLogin", id);
+      this.$router.push("/modiferAgent");
     },
-    modifier: function (id, route) {
-      localStorage.setItem("utilisateurId", id);
-      localStorage.setItem("route", route);
-      this.$router.push("/modifierUtilisateur");
-    },
-    supprimerUtilisateur: async function (id, route) {
+    supprimerUtilisateur: async function (id) {
       if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
-        await axios("http://localhost:3002/gsb/" + route + "/" + id, {
+        console.log(id)
+        await axios("http://localhost:90/mars/agent/" + id, {
           method: "DELETE",
           withCredentials: true,
         });
@@ -166,9 +158,13 @@ export default {
       localStorage.setItem("route", route);
       this.$router.push("/ficheUtilisateur");
     },
+    gotoCreerAgent: function () {
+      this.$router.push("/creerUtilisateur");
+    },
   },
+  
   mounted() {
-    this.listeUtilisateurs("visiteur");
+    this.listeUtilisateurs();
   },
 };
 </script>
