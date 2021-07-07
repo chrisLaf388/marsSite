@@ -53,37 +53,24 @@
                     <div
                       class="card-body d-flex justify-content-between py-0 px-1"
                     >
-                      <div class="conteneurInfos py-1 px-0">
+                      <div class="conteneurInfos  py-1 px-0">
                         <div
-                          class="infos d-flex justify-content-between"
+                          class="d-flex justify-content-between"
                           @click="
-                            ficheUtilisateur(utilisateur.login)
+                            ficheUtilisateur(utilisateur.numeroId)
                           "
                         >
-                          <span
-                            >
-                        
+                          <span>
                             {{ utilisateur.nom }}
-                            {{ utilisateur.prenom }}</span
-                          >
-                          <span>{{ utilisateur.adresse }}</span>
+                            <!-- {{ utilisateur.prenom }} -->
+                            
+                            
+                          </span>
+                          <span>{{utilisateur.dateDebut}}</span>
+                          <span>{{utilisateur.dateFin}}</span>
+                          <span>{{utilisateur.responsable}}</span>
+                          <!-- <span>{{ utilisateur.adresse }}</span> -->
                         </div>
-                      </div>
-                      <div class="boutons d_flex justify-content-end py-1 px-0">
-                        <button
-                          class="mr-2 text-primary bg-white border-0"
-                          @click="modifier(utilisateur.email)"
-                        >
-                          <i class="fas fa-pen"></i>
-                        </button>
-                        <button
-                          class="text-danger bg-white border-0"
-                          @click="
-                            supprimerUtilisateur(utilisateur.email)
-                          "
-                        >
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
                       </div>
                     </div>
                   </div>
@@ -93,11 +80,7 @@
           </div>
           
         </div>
-        <button 
-          @click="gotoCreerAgent"
-          class="btnSubmit d-block m-auto rounded-pill bg-transparent text-white px-3 py-2 border-white fs-5">
-              Créer un agent
-          </button>
+
       </div>
     </div>
   </main>
@@ -120,7 +103,7 @@ export default {
     
     listeUtilisateurs: async function () {
       await axios
-        .get("http://localhost:90/mars/agent", {
+        .get("http://localhost:90/mars/campagne", {
           headers: {
             "Content-Type": "application/json",
           },
@@ -130,13 +113,14 @@ export default {
           console.log(e);
         })
         .then((response) => {
-          this.utilisateurs = response.data;
+          this.utilisateurs = response.data;          
         });
     },
     // a revoir
     ficheUtilisateur: function (id) {
-      localStorage.setItem("utilisateurId", id);
-      this.$router.push("/ficheUtilisateur");
+      console.log(id);
+      localStorage.setItem("campagneId", id);
+      this.$router.push("/ficheCampagne");
     },
     modifier: function (id) {
       this.$store.dispatch("setLogin", id);
@@ -144,7 +128,7 @@ export default {
     },
     supprimerUtilisateur: async function (id) {
       if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
-        console.log(id)
+        
         await axios("http://localhost:90/mars/agent/" + id, {
           method: "DELETE",
           withCredentials: true,
@@ -199,22 +183,22 @@ li {
 }
 
 .nav-item {
-  width: 33.3%;
+  width: 50%;
   cursor: pointer;
 }
 
 .infos {
-  width: 67%;
+  width: 100%;
 }
 
 span {
-  width: 30%;
+  width: 12%;
   white-space: nowrap;
   text-align: left;
 }
 
 .conteneurInfos {
-  width: 90%;
+  width: 100%;
   cursor: pointer;
 }
 

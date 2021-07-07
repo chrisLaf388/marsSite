@@ -5,6 +5,7 @@ import listeUtilisateursBySuperviseur from "@/views/listeUtilisateurBySuperviseu
 import accueilAgent from "@/views/accueilAgent.vue";
 import modiferAgentByAgent from "@/views/modiferAgentByAgent.vue";
 import modifierAgentBySuper from "@/views/modifierAgentBySuper";
+import ficheCampagne from "@/views/ficheCampagne.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -44,8 +45,11 @@ const routes = [
     name: "modifierAgentBySuper",
     component: modifierAgentBySuper,
   },
-  
-  
+  {
+    path: "/ficheCampagne",
+    name: "ficheCampagne",
+    component: ficheCampagne,
+  },
 ];
 
 const router = createRouter({
