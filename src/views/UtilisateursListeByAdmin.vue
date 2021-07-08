@@ -6,19 +6,19 @@
           <ul class="nav nav-tabs">
             <li
               class="nav-item"
-              :class="{ active: visiteurActive, inactive: !visiteurActive }"
+              :class="{ active: agentActive, inactive: !agentActive }"
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeUtilisateurs('visiteur')"
+                @click="listeUtilisateurs('agent')"
               >
                 <p class="m-0 d-flex align-items-center">Agents</p>
-                <button class="btn" @click="createUtilisateur('visiteur')">
+                <button class="btn" @click="createAgent('agent')">
                   <i
                     class="fas fa-plus"
                     :class="{
-                      active: visiteurActive,
-                      inactive: !visiteurActive,
+                      active: agentActive,
+                      inactive: !agentActive,
                     }"
                   ></i>
                 </button>
@@ -26,39 +26,39 @@
             </li>
             <li
               class="nav-item"
-              :class="{ active: rcActive, inactive: !rcActive }"
+              :class="{ active: superActive, inactive: !superActive }"
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeUtilisateurs('redacteurchercheur')"
+                @click="listeUtilisateurs('superviseur')"
               >
                 <p class="m-0 d-flex align-items-center">
                   Superviseurs
                 </p>
                 <button
                   class="btn"
-                  @click="createUtilisateur('redacteurchercheur')"
+                  @click="createUtilisateur('superviseur')"
                 >
                   <i
                     class="fas fa-plus"
-                    :class="{ active: rcActive, inactive: !rcActive }"
+                    :class="{ active: superActive, inactive: !superActive }"
                   ></i>
                 </button>
               </div>
             </li>
             <li
               class="nav-item"
-              :class="{ active: rhActive, inactive: !rhActive }"
+              :class="{ active: campActive, inactive: !campActive }"
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeUtilisateurs('rh')"
+                @click="listeUtilisateurs('camp')"
               >
                 <p class="m-0 d-flex align-items-center">Campagnes</p>
-                <button class="btn" @click="createUtilisateur('rh')">
+                <button class="btn" @click="createUtilisateur('camp')">
                   <i
                     class="fas fa-plus"
-                    :class="{ active: rhActive, inactive: !rhActive }"
+                    :class="{ active: campActive, inactive: !campActive }"
                   ></i>
                 </button>
               </div>
@@ -156,51 +156,51 @@ export default {
   data() {
     return {
       utilisateurs: null,
-      visiteurActive: true,
-      rcActive: false,
-      rhActive: false,
+      agentActive: true,
+      superActive: false,
+      campActive: false,
     };
   },
   methods: {
     getRoute: function () {
       let route = "";
-      if (this.rcActive) {
-        route = "redacteurchercheur";
-      } else if (this.rhActive) {
+      if (this.superActive) {
+        route = "superviseur";
+      } else if (this.campActive) {
         route = "rh";
-      } else if (this.visiteurActive) {
-        route = "visiteur";
+      } else if (this.agentActive) {
+        route = "agent";
       }
       return route;
     },
     getActive: function (route) {
       switch (route) {
-        case "visiteur":
-          this.visiteurActive = true;
-          this.rcActive = false;
-          this.rhActive = false;
+        case "agent":
+          this.agentActive = true;
+          this.superActive = false;
+          this.campActive = false;
           break;
 
-        case "redacteurchercheur":
-          this.visiteurActive = false;
-          this.rcActive = true;
-          this.rhActive = false;
+        case "superviseur":
+          this.agentActive = false;
+          this.superActive = true;
+          this.campActive = false;
           break;
 
-        case "rh":
-          this.visiteurActive = false;
-          this.rcActive = false;
-          this.rhActive = true;
+        case "camp":
+          this.agentActive = false;
+          this.superActive = false;
+          this.campActive = true;
           break;
       }
-      localStorage.setItem("vis", this.visiteurActive);
-      localStorage.setItem("rh", this.rhActive);
-      localStorage.setItem("rc", this.rcActive);
+      localStorage.setItem("agent", this.agentActive);
+      localStorage.setItem("super", this.superActive);
+      localStorage.setItem("camp", this.campActive);
     },
     listeUtilisateurs: async function (route) {
       this.getActive(route);
       await axios
-        .get("http://localhost:3002/gsb/" + route, {
+        .get("http://localhost:90/mars/" + route, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -218,10 +218,10 @@ export default {
       localStorage.setItem("route", route);
       this.$router.push("/ficheUtilisateur");
     },
-    createUtilisateur: function (route) {
+    createAgent: function (route) {
       this.getActive();
       localStorage.setItem("route", route);
-      this.$router.push("/creerUtilisateur");
+      this.$router.push("/creerAgent");
     },
     modifier: function (id, route) {
       localStorage.setItem("utilisateurId", id);
@@ -245,7 +245,7 @@ export default {
     },
   },
   mounted() {
-    this.listeUtilisateurs("visiteur");
+    this.listeUtilisateurs("agent");
   },
 };
 </script>

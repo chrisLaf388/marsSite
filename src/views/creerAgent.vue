@@ -160,7 +160,7 @@ export default {
       
     },
     annuler: function () {
-      this.$router.push("/listeUtilisateursBySuperviseur");
+      this.$router.push("/listeUtilisateursByAdmin");
     },
   },
 };

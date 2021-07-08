@@ -1,5 +1,5 @@
 import Login from "@/views/Login.vue";
-import creerUtilisateur from "@/views/CreerUtilisateur.vue";
+import creerAgent from "@/views/creerAgent.vue";
 import listeUtilisateursByAdmin from "@/views/UtilisateursListeByAdmin.vue";
 import listeUtilisateursBySuperviseur from "@/views/listeUtilisateurBySuperviseur.vue";
 import accueilAgent from "@/views/accueilAgent.vue";
@@ -16,9 +16,9 @@ const routes = [
     component: Login,
   },
   {
-    path: "/creerUtilisateur",
-    name: "creerUtilisateur",
-    component: creerUtilisateur,
+    path: "/creerAgent",
+    name: "creerAgent",
+    component: creerAgent,
   },
   {
     path: "/listeUtilisateursByAdmin",
