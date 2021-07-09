@@ -6,6 +6,7 @@ import accueilAgent from "@/views/accueilAgent.vue";
 import modiferAgentByAgent from "@/views/modiferAgentByAgent.vue";
 import modifierAgentBySuper from "@/views/modifierAgentBySuper";
 import ficheCampagne from "@/views/ficheCampagne.vue";
+import ficheAgent from "@/views/ficheAgent.vue";
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -49,6 +50,11 @@ const routes = [
     path: "/ficheCampagne",
     name: "ficheCampagne",
     component: ficheCampagne,
+  },
+  {
+    path: "/ficheAgent",
+    name: "ficheAgent",
+    component: ficheAgent,
   },
 ];
 

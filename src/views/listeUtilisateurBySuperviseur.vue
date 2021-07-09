@@ -10,7 +10,7 @@
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeAgents('agent')"
+                @click="liste('agent')"
               >  
                 <p>Agents</p>
               </div>
@@ -20,7 +20,7 @@
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeCampagnes('campagnes')"
+                @click="liste('campagne')"
               >
                 <p>Campagnes</p>
               </div>             
@@ -32,7 +32,6 @@
               id="labels"
               class="d-flex justify-content-between px-1 mb-1 mt-4"
             >
-              <p v-if="agentActive" class="text-white mb-0">Vac.</p>
               <p v-if="agentActive" class="text-white mb-0">Nom</p>
               <p v-if="agentActive" class="text-white mb-0">Prenom</p>
               <p v-if="agentActive" class="text-white mb-0">Op en cours</p>
@@ -54,22 +53,37 @@
                       class="card-body d-flex justify-content-between py-0 px-1"
                     >
                       <div class="conteneurInfos  py-1 px-0">
-                        <div
+                        <div 
+                          v-if="campagneActive"
                           class="d-flex justify-content-between"
                           @click="
-                            ficheUtilisateur(utilisateur.numeroId)
+                            ficheUtilisateur(utilisateur.numeroId, 'campagne')
                           "
                         >
                           <span>
                             {{ utilisateur.nom }}
-                            <!-- {{ utilisateur.prenom }} -->
-                            
-                            
+                          </span>
+                          <span>
+                            {{ utilisateur.prenom }}
                           </span>
                           <span>{{utilisateur.dateDebut}}</span>
                           <span>{{utilisateur.dateFin}}</span>
                           <span>{{utilisateur.responsable}}</span>
-                          <!-- <span>{{ utilisateur.adresse }}</span> -->
+                          
+                        </div>
+                        <div 
+                          v-if="agentActive"
+                          class="d-flex justify-content-between"
+                          @click="
+                            ficheUtilisateur(utilisateur.email, 'agent')
+                          "
+                        >
+                          <span>
+                            {{ utilisateur.nom }}
+                          </span>
+                          <span>
+                            {{ utilisateur.prenom }}
+                          </span>                          
                         </div>
                       </div>
                     </div>
@@ -90,7 +104,7 @@
 import axios from "axios";
 
 export default {
-  name: "ListeUtilisateurs",
+  name: "ListeBySuperviseur",
   data() {
     return {
       utilisateurs: null,
@@ -100,10 +114,10 @@ export default {
     };
   },
   methods: {
-    
-    listeUtilisateurs: async function () {
+    liste: async function (route) {
+      this.getActive(route);
       await axios
-        .get("http://localhost:90/mars/campagne", {
+        .get("http://localhost:90/mars/" + route, {
           headers: {
             "Content-Type": "application/json",
           },
@@ -113,34 +127,33 @@ export default {
           console.log(e);
         })
         .then((response) => {
-          this.utilisateurs = response.data;          
+          this.utilisateurs = response.data;         
         });
     },
-    // a revoir
-    ficheUtilisateur: function (id) {
-      console.log(id);
-      localStorage.setItem("campagneId", id);
-      this.$router.push("/ficheCampagne");
-    },
-    modifier: function (id) {
-      this.$store.dispatch("setLogin", id);
-      this.$router.push("/modiferAgent");
-    },
-    supprimerUtilisateur: async function (id) {
-      if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
-        
-        await axios("http://localhost:90/mars/agent/" + id, {
-          method: "DELETE",
-          withCredentials: true,
-        });
-        window.location.reload();
+    getActive: function (route) {
+      switch (route) {
+        case "agent":
+          this.agentActive = true;
+          this.campagneActive = false;
+          break;
+
+        case "campagne":
+          this.agentActive = false;
+          this.campagneActive = true;
+          break;
       }
     },
-    getFicheUtilisateur: function (e, route) {
-      let value = e.target.value;
-      localStorage.setItem("utilisateurId", value);
-      localStorage.setItem("route", route);
-      this.$router.push("/ficheUtilisateur");
+    ficheUtilisateur: function (id, route) {
+      if (route === 'agent')
+      {
+        localStorage.setItem("agentId", id);
+        this.$router.push("/ficheAgent");
+      }
+      else
+      {
+        localStorage.setItem("campagneId", id);
+        this.$router.push("/ficheCampagne");
+      }
     },
     gotoCreerAgent: function () {
       this.$router.push("/creerUtilisateur");
@@ -148,7 +161,7 @@ export default {
   },
   
   mounted() {
-    this.listeUtilisateurs();
+    this.liste('campagne');
   },
 };
 </script>
