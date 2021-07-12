@@ -37,7 +37,7 @@
                 </p>
                 <button
                   class="btn"
-                  @click="createUtilisateur('superviseur')"
+                  @click="createAgent('superviseur')"
                 >
                   <i
                     class="fas fa-plus"
@@ -52,10 +52,10 @@
             >
               <div
                 class="nav-link d-flex justify-content-between"
-                @click="listeUtilisateurs('camp')"
+                @click="listeUtilisateurs('campagne')"
               >
                 <p class="m-0 d-flex align-items-center">Campagnes</p>
-                <button class="btn" @click="createUtilisateur('camp')">
+                <button class="btn" @click="createAgent('campagne')">
                   <i
                     class="fas fa-plus"
                     :class="{ active: campActive, inactive: !campActive }"
@@ -187,7 +187,7 @@ export default {
           this.campActive = false;
           break;
 
-        case "camp":
+        case "campagne":
           this.agentActive = false;
           this.superActive = false;
           this.campActive = true;
@@ -195,7 +195,7 @@ export default {
       }
       localStorage.setItem("agent", this.agentActive);
       localStorage.setItem("super", this.superActive);
-      localStorage.setItem("camp", this.campActive);
+      localStorage.setItem("campagne", this.campActive);
     },
     listeUtilisateurs: async function (route) {
       this.getActive(route);
@@ -220,8 +220,18 @@ export default {
     },
     createAgent: function (route) {
       this.getActive();
-      localStorage.setItem("route", route);
-      this.$router.push("/creerAgent");
+      if (route == 'agent'){
+        localStorage.setItem("route", route);
+        this.$router.push("/creerAgent");
+      }
+      else if (route == 'superviseur'){
+        localStorage.setItem("route", route);
+        this.$router.push("/creerSuperviseur");
+      }
+      else {
+        localStorage.setItem("route", route);
+        this.$router.push("/creerCampagne");
+      }
     },
     modifier: function (id, route) {
       localStorage.setItem("utilisateurId", id);
@@ -230,7 +240,7 @@ export default {
     },
     supprimerUtilisateur: async function (id, route) {
       if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
-        await axios("http://localhost:3002/gsb/" + route + "/" + id, {
+        await axios("http://localhost:90/mars/" + route + "/" + id, {
           method: "DELETE",
           withCredentials: true,
         });

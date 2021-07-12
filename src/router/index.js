@@ -7,6 +7,9 @@ import modiferAgentByAgent from "@/views/modiferAgentByAgent.vue";
 import modifierAgentBySuper from "@/views/modifierAgentBySuper";
 import ficheCampagne from "@/views/ficheCampagne.vue";
 import ficheAgent from "@/views/ficheAgent.vue";
+import creerCampagne from "@/views/creerCampagne.vue";
+import creerSuperviseur from "@/views/creerSuperviseur.vue"
+
 
 import { createRouter, createWebHistory } from "vue-router";
 
@@ -55,6 +58,16 @@ const routes = [
     path: "/ficheAgent",
     name: "ficheAgent",
     component: ficheAgent,
+  },
+  {
+    path: "/creerCampagne",
+    name: "creerCampagne",
+    component: creerCampagne,
+  },
+  {
+    path: "/creerSuperviseur",
+    name: "creerSuperviseur",
+    component: creerSuperviseur,
   },
 ];
 
