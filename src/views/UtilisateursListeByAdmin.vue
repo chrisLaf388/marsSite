@@ -70,9 +70,16 @@
               class="d-flex justify-content-between px-1 mb-1 mt-4"
             >
               <p class="text-white mb-0">Nom</p>
-              <p class="text-white mb-0">Prénom</p>
-              <p class="text-white mb-0">Op en cours</p>
-              <p class="text-white mb-0">Langues</p>
+              <p 
+                v-if="superActive || agentActive" 
+                class="text-white mb-0">
+                Prénom
+              </p>
+              <p v-if="superActive || agentActive" class="text-white mb-0">Op en cours</p>
+              <p v-if="superActive || agentActive" class="text-white mb-0">Langues</p>
+              <p v-if="campActive" class="text-white mb-0">Date - Début</p>
+              <p v-if="campActive" class="text-white mb-0">Date - Fin</p>
+              <p v-if="campActive" class="text-white mb-0">Responsable</p>
             </div>
             <div>
               <ul id="visiteurs" class="p-0 m-0">
@@ -85,64 +92,67 @@
                       class="card-body d-flex justify-content-between py-0 px-1"
                     >
                       <div class="conteneurInfos py-1 px-0">
-                        <div
+                        <div v-if="superActive || agentActive"
                           class="infos d-flex justify-content-between"
                           @click="
-                            ficheUtilisateur(utilisateur.login)
+                            ficheUtilisateur(utilisateur.email, getRoute())
                           "
                         >
-                          <span
-                            >{{ utilisateur.nom }}
-                            {{ utilisateur.prenom }}</span
-                          >
-                          <span>{{ utilisateur.dateEmbauche }}</span>
+                          <span>{{ utilisateur.nom }}</span>
+                          <span>{{ utilisateur.prenom }}</span>
+                        </div>
+                        <div v-if="campActive"
+                          class="infos d-flex justify-content-between"
+                          @click="
+                            ficheUtilisateur(utilisateur.numeroId, getRoute())
+                          "
+                        >
+                          <span >{{ utilisateur.nom }}</span>
+                          <span >{{ utilisateur.dateDebut }}</span>
+                          <span >{{ utilisateur.dateFin }}</span>
+                          <span >{{ utilisateur.responsable }}</span>
+                        
                         </div>
                       </div>
                       <div class="boutons d_flex justify-content-end py-1 px-0">
-                        <button
+                        <button v-if="superActive || agentActive"
                           class="mr-2 text-primary bg-white border-0"
-                          @click="modifier(utilisateur.login)"
+                          @click="modifier(getRoute(), utilisateur.email)"
+                        >
+                          <i class="fas fa-pen"></i>
+                        </button>
+                        <button v-if="campActive"
+                          class="mr-2 text-primary bg-white border-0"
+                          @click="modifier(getRoute(), utilisateur.numeroId)"
                         >
                           <i class="fas fa-pen"></i>
                         </button>
                         <button
+                        v-if="superActive || agentActive"
                           class="text-danger bg-white border-0"
                           @click="
-                            supprimerUtilisateur(utilisateur.login)
+                            supprimerUtilisateur(utilisateur.email, getRoute())
+                          "
+                        >
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                        <button
+                        v-if="campActive"
+                          class="text-danger bg-white border-0"
+                          @click="
+                            supprimerUtilisateur(utilisateur.numeroId, getRoute())
                           "
                         >
                           <i class="fas fa-trash-alt"></i>
                         </button>
                       </div>
-                      
                     </div>
-                    
                   </div>
                 </li>
               </ul>
             </div>
           </div>
-          
         </div>
-        
-      </div>
-      <div class = "d-flexs">
-        <button
-                  type="submit"
-                  id="annuler"
-                  class="btnSubmit d-block m-auto rounded-pill bg-transparent text-white px-3 py-2 border-white fs-5"
-                  @click="annuler()"
-                >
-                  Creer un Agent
-                </button>
-        <button
-                  type="submit"
-                  id="annuler"
-                  class="btnSubmit d-block m-auto rounded-pill bg-transparent text-white px-3 py-2 border-white fs-5"
-                  @click="annuler()"
-                >
-                  Creer une OP
-                </button>
       </div>
     </div>
   </main>
@@ -167,7 +177,7 @@ export default {
       if (this.superActive) {
         route = "superviseur";
       } else if (this.campActive) {
-        route = "rh";
+        route = "campagne";
       } else if (this.agentActive) {
         route = "agent";
       }
@@ -214,9 +224,15 @@ export default {
         });
     },
     ficheUtilisateur: function (id, route) {
-      localStorage.setItem("utilisateurId", id);
+      console.log
+      localStorage.setItem("agentId", id);
       localStorage.setItem("route", route);
-      this.$router.push("/ficheUtilisateur");
+      if (route === 'agent' || route === 'superviseur' ){
+        this.$router.push("/ficheAgent");
+      }
+      else if (route === 'campagne'){
+        this.$router.push("/ficheCampagne");
+      }
     },
     createAgent: function (route) {
       this.getActive();
@@ -233,12 +249,18 @@ export default {
         this.$router.push("/creerCampagne");
       }
     },
-    modifier: function (id, route) {
+    modifier: function (route, id) {
       localStorage.setItem("utilisateurId", id);
       localStorage.setItem("route", route);
-      this.$router.push("/modifierUtilisateur");
+      if (route === 'agent' || route ==='superviseur')
+        this.$router.push("/modifierAgentByAdmin");
+      else
+        this.$router.push("/modifierCampagneByAdmin");
+      
+      
     },
     supprimerUtilisateur: async function (id, route) {
+      console.log(route);
       if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
         await axios("http://localhost:90/mars/" + route + "/" + id, {
           method: "DELETE",

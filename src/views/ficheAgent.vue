@@ -58,10 +58,11 @@ export default {
     };
   },
   methods: {
+    
     afficherFiche: async function () {
       await axios
         .get(
-          "http://localhost:90/mars/agent/"+ localStorage.getItem('agentId'),
+          "http://localhost:90/mars/"+localStorage.getItem('route')+"/"+ localStorage.getItem('agentId'),
           {
             withCredentials: true,
           }
@@ -80,8 +81,10 @@ export default {
         });
     },
     annuler: function () {
+      if(localStorage.getItem('route')!='')
+        this.$router.push("/listeUtilisateursByAdmin");
+      else
         this.$router.push("/listeUtilisateursBySuperviseur");
-      
     },
   },
   mounted() {

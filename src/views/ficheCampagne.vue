@@ -56,7 +56,7 @@ export default {
     afficherFiche: async function () {
       await axios
         .get(
-          "http://localhost:90/mars/campagne/"+localStorage.getItem("campagneId"),
+          "http://localhost:90/mars/campagne/"+localStorage.getItem("agentId"),
           {
             withCredentials: true,
           }
@@ -72,27 +72,15 @@ export default {
           this.responsable = response.data.responsable;
         });
     },
-    getRole: async function () {
-      if (localStorage.getItem("rc") === "true") {
-        this.role = "Rédacteur/Chercheur";
-      } else if (localStorage.getItem("rh") === "true") {
-        this.role = "Ressources humaines";
-      } else if (localStorage.getItem("vis") === "true") {
-        this.role = "Visiteur";
-      }
-      return this.role;
-    },
-    rediriger: function () {
-      this.$router.push("/modifierUtilisateur");
-    },
     annuler: function () {
+      if(localStorage.getItem('route')!='')
+        this.$router.push("/listeUtilisateursByAdmin");
+      else
         this.$router.push("/listeUtilisateursBySuperviseur");
-      
     },
   },
   mounted() {
     this.afficherFiche();
-    this.getRole();
   },
 };
 </script>

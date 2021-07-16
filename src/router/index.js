@@ -4,7 +4,8 @@ import listeUtilisateursByAdmin from "@/views/UtilisateursListeByAdmin.vue";
 import listeUtilisateursBySuperviseur from "@/views/listeUtilisateurBySuperviseur.vue";
 import accueilAgent from "@/views/accueilAgent.vue";
 import modiferAgentByAgent from "@/views/modiferAgentByAgent.vue";
-import modifierAgentBySuper from "@/views/modifierAgentBySuper";
+import modifierAgentByAdmin from "@/views/modifierAgentByAdmin.vue";
+import modifierCampagneByAdmin from "@/views/modifierCampagneByAdmin.vue"
 import ficheCampagne from "@/views/ficheCampagne.vue";
 import ficheAgent from "@/views/ficheAgent.vue";
 import creerCampagne from "@/views/creerCampagne.vue";
@@ -45,9 +46,9 @@ const routes = [
     component: modiferAgentByAgent,
   },
   {
-    path: "/modifierAgentBySuper",
-    name: "modifierAgentBySuper",
-    component: modifierAgentBySuper,
+    path: "/modifierAgentByAdmin",
+    name: "modifierAgentByAdmin",
+    component: modifierAgentByAdmin,
   },
   {
     path: "/ficheCampagne",
@@ -68,6 +69,11 @@ const routes = [
     path: "/creerSuperviseur",
     name: "creerSuperviseur",
     component: creerSuperviseur,
+  },
+  {
+    path: "/modifierCampagneByAdmin",
+    name: "modifierCampagneByAdmin",
+    component: modifierCampagneByAdmin,
   },
 ];
 

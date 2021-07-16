@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-3"></div>
         <div class="col-6 login-form-1 center px-5 py-4">
-          <h3 class="text-center text-white mb-5">Modifier votre Profil Agent</h3>
+          <h3 class="text-center text-white mb-5">Modifier Profil Agent</h3>
           <form @submit.prevent="modifierAgent()">
             <div class="form-group row">
               <p class="col-6 d-flex flex-column">
@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     modifierAgent: async function () {
-      await axios("http://localhost:90/mars/agent/"+ this.$store.getters.getLoginFromStore, {
+      await axios("http://localhost:90/mars/"+localStorage.getItem("route")+"/"+ localStorage.getItem("utilisateurId"), {
         method: "PUT",
         withCredentials: true,
         headers: {
@@ -134,11 +134,10 @@ export default {
           ville: this.ville,
         },
       })
-      this.$router.push("/accueilAgent");
+      this.$router.push("/listeUtilisateursByAdmin");
     },
-    // Probleme car renvois tjs sur accueil agent et non chez superviseur
     annuler: function () {
-      this.$router.push("/accueilAgent");
+      this.$router.push("/listeUtilisateursByAdmin");
     },
   },
 };

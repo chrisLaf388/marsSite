@@ -156,7 +156,7 @@ export default {
           ville: this.ville,
         },
       })
-      this.$router.push("/listeUtilisateursBySuperviseur");    
+      this.$router.push("/listeUtilisateursByAdmin");    
       
     },
     annuler: function () {
