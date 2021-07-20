@@ -2,7 +2,19 @@
   <main class="mx-auto d-flex align-items-center">
     <div class="container login-container">
       <div class="row">
-        <div class="col-3"></div>
+        <div class="col-3 login-form-1 center px-5 py-4">
+          <form @submit.prevent="ajoutLangue()">
+            <h4>Langues : </h4>
+            <input type="text" v-model="langue">
+            <button>Envoyer</button>
+            <ul>
+              <li v-for="langue in langues" :key="langue.id">
+                {{ langue }}
+              </li>
+            </ul>
+            <button @click="supprimerLangues">Delete button</button>
+          </form>
+        </div>
         <div class="col-6 login-form-1 center px-5 py-4">
           <h3 class="text-center text-white mb-5">Modifier votre Profil Agent</h3>
           <form @submit.prevent="modifierAgent()">
@@ -115,6 +127,7 @@ export default {
       adresse: "",
       codePostal: "",
       ville: "",
+      langue:"",
     };
   },
   methods: {
@@ -140,7 +153,45 @@ export default {
     annuler: function () {
       this.$router.push("/accueilAgent");
     },
+    ajoutLangue:async function(){
+      await axios("http://localhost:90/mars/agent/"+ this.$store.getters.getLoginFromStore+"/langue?langue="+this.langue, {
+        method: "POST",
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    },
+    supprimerLangues: async function(){
+      await axios("http://localhost:90/mars/agent/"+ this.$store.getters.getLoginFromStore+"/langue", {
+        method: "DELETE",
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      window.location.reload();
+    },
+    aficherLangues: async function(){
+      await axios("http://localhost:90/mars/agent/"+ this.$store.getters.getLoginFromStore, {
+        method: "GET",
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .catch((e) => {
+        console.log(e);
+        })
+      .then((response) => {
+        this.langues = response.data.langues;
+        console.log(this.langues);
+      });
+    },
   },
+  mounted(){
+    this.aficherLangues
+  }
 };
 </script>
 
