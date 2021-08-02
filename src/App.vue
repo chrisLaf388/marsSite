@@ -7,6 +7,7 @@
 </template>
 
 <script>
+
 import Header from "@/components/Header.vue";
 export default {
   name: "App",
@@ -17,6 +18,9 @@ export default {
     return {
       
     };
+  },
+  mounted() {
+    this.$router.push("/");
   },
   
 };

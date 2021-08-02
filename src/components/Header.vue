@@ -11,7 +11,7 @@
     <div
       class="d-flex justify-content-end align-items-center"
       id="connexion"
-      v-if="getLogin"
+      v-if!="getLogin"
     >
       <div class="fs-5 mr-5 text-primary" id="pseudo">
         Bonjour, {{ getLogin }}
@@ -47,21 +47,23 @@ export default {
     },
     rediriger: function () {
       switch (localStorage.getItem("role")) {
-        case "VIS":
-          this.$router.push("/rapportsVisiteur");
+        case "ADMIN":
+          this.$router.push("/listeUtilisateursByAdmin");
           break;
-        case "RC":
-          this.$router.push("/rapportRedacteurListe");
+        case "SUPERVISEUR":
+          this.$router.push("/listeUtilisateursBySuperviseur");
           break;
-        case "RH":
-          this.$router.push("/utilisateurs");
+        case "AGENT":
+          this.$router.push("/accueilAgent");
           break;
       }
     },
   },
   computed: {
     getLogin: function () {
-      return this.$store.getters.getLoginFromStore;
+      if (this.$store.getters.getLoginFromStore !== 'null'){
+        return this.$store.getters.getLoginFromStore;
+      }
     },
   },
 };

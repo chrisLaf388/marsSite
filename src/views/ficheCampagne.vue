@@ -56,7 +56,7 @@ export default {
     afficherFiche: async function () {
       await axios
         .get(
-          "http://localhost:90/mars/campagne/"+localStorage.getItem("agentId"),
+          "http://localhost:90/mars/campagne/"+localStorage.getItem("campagneId"),
           {
             withCredentials: true,
           }
@@ -64,8 +64,7 @@ export default {
         .catch((e) => {
           console.log(e);
         })
-        .then((response) => {
-            console.log(response.data);
+        .then((response) => { 
           this.nom = response.data.nom;
           this.dateDebut = response.data.dateDebut;
           this.dateFin = response.data.dateFin;
@@ -73,9 +72,9 @@ export default {
         });
     },
     annuler: function () {
-      if(localStorage.getItem('route')!='')
+      if(localStorage.getItem('role')==='ADMIN')
         this.$router.push("/listeUtilisateursByAdmin");
-      else
+      else if(localStorage.getItem('role')==='SUPERVISEUR')
         this.$router.push("/listeUtilisateursBySuperviseur");
     },
   },

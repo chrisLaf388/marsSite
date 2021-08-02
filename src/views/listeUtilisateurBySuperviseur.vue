@@ -60,9 +60,7 @@
                             ficheUtilisateur(utilisateur.numeroId, 'campagne')
                           "
                         >
-                          <span>
-                            {{ utilisateur.nom }}
-                          </span>
+                          <span>{{ utilisateur.nom }}</span>
                           <span>
                             {{ utilisateur.prenom }}
                           </span>
@@ -127,7 +125,7 @@ export default {
           console.log(e);
         })
         .then((response) => {
-          this.utilisateurs = response.data;         
+          this.utilisateurs = response.data;   
         });
     },
     getActive: function (route) {
@@ -144,12 +142,13 @@ export default {
       }
     },
     ficheUtilisateur: function (id, route) {
+      localStorage.setItem("route");
       if (route === 'agent')
       {
         localStorage.setItem("agentId", id);
         this.$router.push("/ficheAgent");
       }
-      else
+      else if (route === 'campagne')
       {
         localStorage.setItem("campagneId", id);
         this.$router.push("/ficheCampagne");

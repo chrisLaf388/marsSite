@@ -62,7 +62,7 @@ export default {
     afficherFiche: async function () {
       await axios
         .get(
-          "http://localhost:90/mars/"+localStorage.getItem('route')+"/"+ localStorage.getItem('agentId'),
+          "http://localhost:90/mars/"+localStorage.getItem("route")+"/"+ localStorage.getItem('agentId'),
           {
             withCredentials: true,
           }
@@ -71,7 +71,6 @@ export default {
           console.log(e);
         })
         .then((response) => {
-          console.log(response.data);
           this.email = response.data.email;
           this.nom = response.data.nom;
           this.prenom = response.data.prenom;
@@ -81,9 +80,9 @@ export default {
         });
     },
     annuler: function () {
-      if(localStorage.getItem('route')!='')
+      if(localStorage.getItem('role')==='ADMIN')
         this.$router.push("/listeUtilisateursByAdmin");
-      else
+      else if(localStorage.getItem('role')==='SUPERVISEUR')
         this.$router.push("/listeUtilisateursBySuperviseur");
     },
   },

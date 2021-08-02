@@ -224,13 +224,13 @@ export default {
         });
     },
     ficheUtilisateur: function (id, route) {
-      console.log
       localStorage.setItem("agentId", id);
       localStorage.setItem("route", route);
       if (route === 'agent' || route === 'superviseur' ){
         this.$router.push("/ficheAgent");
       }
       else if (route === 'campagne'){
+        localStorage.setItem("campagneId", id);
         this.$router.push("/ficheCampagne");
       }
     },
@@ -260,7 +260,6 @@ export default {
       
     },
     supprimerUtilisateur: async function (id, route) {
-      console.log(route);
       if (confirm("Voulez-vous vraiment supprimer cet utilisateur?")) {
         await axios("http://localhost:90/mars/" + route + "/" + id, {
           method: "DELETE",
