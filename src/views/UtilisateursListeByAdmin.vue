@@ -265,7 +265,7 @@ export default {
           method: "DELETE",
           withCredentials: true,
         });
-        window.location.reload();
+        this.$router.push("/UtilisateursListeByAdmin");
       }
     },
     getFicheUtilisateur: function (e, route) {
